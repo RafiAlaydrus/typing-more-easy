@@ -1,0 +1,374 @@
+:root {
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+
+  /* Dark gray theme (NOT black) */
+  --bg-main: #15171c;
+  --bg-panel: #1c1f26;
+  --bg-panel-soft: #20232b;
+
+  --border-soft: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.12);
+
+  --text-main: rgba(235, 237, 243, 0.96);
+  --text-muted: rgba(235, 237, 243, 0.58);
+  --text-faint: rgba(235, 237, 243, 0.35);
+
+  --accent-warn: rgba(255, 204, 128, 0.18);
+  --accent-warn-border: rgba(255, 204, 128, 0.35);
+
+  --accent-error: rgba(255, 100, 100, 0.18);
+  --accent-error-border: rgba(255, 100, 100, 0.35);
+
+  --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  background: var(--bg-main);
+  color: var(--text-main);
+}
+
+#root { height: 100%; }
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Top bar */
+.topbar {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border-soft);
+  background: var(--bg-panel);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+}
+
+/* (subtitle removed in JSX, but keep class harmless if you add later) */
+.subtitle {
+  margin-top: 4px;
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.btn {
+  border: 1px solid var(--border-soft);
+  background: var(--bg-panel-soft);
+  color: var(--text-main);
+  padding: 10px 12px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.06s ease, opacity 0.2s ease, border-color 0.2s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  border-color: var(--border-strong);
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn.primary {
+  background: var(--accent-warn);
+  border-color: var(--accent-warn-border);
+}
+
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  border: 1px solid var(--border-soft);
+  background: var(--bg-panel-soft);
+  font-size: 13px;
+  font-weight: 700;
+  opacity: 0.95;
+  color: var(--text-main);
+}
+
+.toggle input { transform: translateY(1px); }
+
+/* Two-pane layout (fixed for laptop) */
+.panes {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 12px;
+  min-height: 0;
+}
+
+.pane {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border-soft);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--bg-panel);
+  min-height: 0;
+  box-shadow: var(--shadow-soft);
+}
+
+.paneHeader {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border-soft);
+  background: var(--bg-panel-soft);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.paneTitle {
+  font-size: 13px;
+  font-weight: 800;
+  opacity: 0.95;
+}
+
+.paneHeaderRight {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pill {
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border-soft);
+  background: var(--bg-panel);
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+/* =========================
+   SOURCE + TYPING (WORD-LIKE)
+   ========================= */
+
+.textarea {
+  flex: 1;
+  width: 100%;
+  padding: 14px;
+  border: 0;
+  outline: none;
+  resize: none;
+  background: transparent;
+  color: var(--text-main);
+
+  font-size: 16px;
+  line-height: 1.8;
+  font-family: "Times New Roman", Times, serif;
+}
+
+.textarea::placeholder {
+  color: var(--text-faint);
+}
+
+.sourceViewer {
+  flex: 1;
+  padding: 14px;
+  overflow: auto;
+  white-space: pre-wrap;
+
+  font-size: 16px;
+  line-height: 1.8;
+  font-family: "Times New Roman", Times, serif;
+  color: var(--text-main);
+}
+
+/* =========================
+   HIGHLIGHT TOKENS
+   ========================= */
+
+.sSpace { white-space: pre-wrap; }
+
+.sMatched { color: var(--text-faint); }
+
+.sNext {
+  background: var(--accent-warn);
+  box-shadow:
+    0 0 0 1px var(--accent-warn-border),
+    0 0 16px rgba(255, 204, 128, 0.15);
+  border-radius: 10px;
+  padding: 2px 4px;
+}
+
+.sWrong {
+  background: var(--accent-error);
+  box-shadow:
+    0 0 0 1px var(--accent-error-border),
+    0 0 16px rgba(255, 100, 100, 0.18);
+  border-radius: 10px;
+  padding: 2px 4px;
+}
+
+.sRest { color: var(--text-main); }
+
+/* =========================
+   BLOCK COPY ON SOURCE
+   ========================= */
+
+.noCopy {
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+.noCopy * {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* =========================
+   MODAL + BACKGROUND BLUR
+   ========================= */
+
+.blurred .topbar,
+.blurred .panes {
+  filter: blur(8px);
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(6px);
+  z-index: 9999;
+}
+
+.modalCard {
+  width: min(420px, 92vw);
+  border-radius: 16px;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-panel);
+  padding: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
+}
+
+.modalTitle {
+  font-size: 16px;
+  font-weight: 800;
+  margin-bottom: 6px;
+  color: var(--text-main);
+}
+
+.modalText {
+  font-size: 13px;
+  opacity: 0.8;
+  line-height: 1.5;
+  margin-bottom: 14px;
+  color: var(--text-muted);
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* Focus mode: slightly reduce topbar height feel */
+.topbar .btn {
+  min-width: 110px;
+}
+
+/* Progress bar */
+.progressWrap {
+  padding: 8px 12px 0 12px;
+}
+
+.progressRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.progressLabel {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--text-main); /* keep percentage white */
+  min-width: 36px;
+  text-align: right;
+}
+
+.progressTrack {
+  height: 6px;
+  flex: 1;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-soft);
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: 999px;
+
+  background: linear-gradient(
+    90deg,
+    rgba(120, 220, 160, 0.9),
+    rgba(90, 200, 140, 0.9)
+  );
+
+  box-shadow:
+    0 0 6px rgba(120, 220, 160, 0.45),
+    0 0 14px rgba(120, 220, 160, 0.25);
+
+  transition: width 0.25s ease;
+}
+
+/* Subtle current-sentence highlight (does not override sNext/sWrong) */
+.sSentence {
+  background: rgba(255, 255, 255, 0.045);
+  border-radius: 10px;
+  padding: 2px 4px;
+}
+
+.sSentenceSpace {
+  /* Keep spaces readable but avoid ugly “blocks” */
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* Privacy mode (token-level): blur everything except the current word */
+.privacyOn .pBlur {
+  filter: blur(6px);
+  opacity: 0.65;
+  transition: filter 0.12s ease, opacity 0.12s ease;
+}
+
+/* Optional: hover to reveal everything */
+.privacyOn:hover .pBlur {
+  filter: blur(0px);
+  opacity: 1;
+}
+
